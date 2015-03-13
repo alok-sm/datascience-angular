@@ -1,0 +1,33 @@
+<div class="mainpage">
+	<div ng-switch="question.taskType">
+		<center>
+			<h2>{{question.taskTitle}}</h2>
+			<img ng-switch-when="image" style="max-width:400px;" class="img-responsive" src="{{question.taskData}}"/>
+			<p ng-switch-when="text">{{question.taskData}}</p>
+		</center>
+	</div>
+	<br/><br/>
+	<div ng-switch="question.answerType">
+		<div ng-switch-when="radio" class="radio radio-success" ng-repeat="y in question.answerData">
+			<label>
+				<input type="radio" name="{{question.taskId}}" value="{{y}}" checked>
+				<span class="circle"></span>
+				<span class="check"></span>
+				{{y}}
+			</label>
+		</div>
+			<div ng-switch-when="text" class="form-control-wrapper">
+				<p>Answer</p>
+				<div>
+					<input type="number" class="form-control empty"/>
+					<span class="material-input"></span>
+				</div>
+			</div>
+	</div>
+	<center>
+		<button class="btn btn-primary btn-lg shadow-z-2" onclick="changeQuestion()">
+	      <span class="glyphicon glyphicon-ok"></span>
+	      &nbsp;&nbsp;Submit
+	    </button>
+    </center>
+</div>

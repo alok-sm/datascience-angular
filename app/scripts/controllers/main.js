@@ -1,5 +1,5 @@
 'use strict';
 
 angular.module('aspiringResearcherApp')
-  .controller('MainCtrl', function ($scope) {
+	.controller('MainCtrl', function ($scope) {
 });

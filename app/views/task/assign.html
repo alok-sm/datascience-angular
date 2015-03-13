@@ -1,1 +1,19 @@
-<p>This is the task/assign view.</p>
+<div id="container" onload="init()" >
+	<customtask  ng-repeat='x in testResp' data='x' id='customtask'></customtask>
+</div>
+
+<script type="text/javascript">
+		setTimeout(function(){ 
+			taskinners = document.getElementsByTagName("customtask");
+			for(i = 1; i < taskinners.length; i++){
+				taskinners[i].style.display = "none";
+			}
+			i = 0;
+		}, 100);
+		
+	function changeQuestion(){
+		taskinners[i].style.display = "none"
+		i = (i + 1) % taskinners.length
+		taskinners[i].style.display = "inherit"
+	}
+</script>
