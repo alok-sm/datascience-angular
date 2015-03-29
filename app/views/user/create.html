@@ -1,52 +1,66 @@
 <div class="mainpage">
-  <center>
-    <h1>Tell us a bit about Yourself</h1>
-  </center>
-  <br/><br/><br/>
-  <div style="max-width:500px;margin: 0 auto; ;">
-    <label>
-      <p>Gender</p>
-      <div class="radio radio-success">
-        <label>
-          <input type="radio" name="gender" value="Male" checked>
-          <span class="circle"></span>
-          <span class="check"></span>
-          Male
-        </label>
-      </div>
-      <div class="radio radio-success">
-        <label>
-          <input type="radio" name="gender" value="Female">
-          <span class="circle"></span>
-          <span class="check"></span>
-          Female
-        </label>
-      </div>
-    </label>
-    <br/><br/><br/>
-    <label>
-      <p>Age</p>
-      <div class="form-control-wrapper">
-        <input type="number" min="10" step="1" max="100" style="width:210px;" class="form-control empty" placeholder="in years"/>
-        <span class="material-input"></span>
-      </div>
-    </label>
-    <br/><br/><br/><br/>
-    <label>
-      <p>From</p>
-      <selectcountry></selectcountry>
-    </label>
-    <br/><br/><br/>
-  </div>
-  <center>
-    <!-- <button class="btn btn-primary btn-lg shadow-z-2" ng-click="">
-      <span class="glyphicon glyphicon-ok"></span>
-      &nbsp;&nbsp;Submit
-    </button> -->
-
-    <a href="/#/task/assign" class="btn btn-primary btn-lg shadow-z-2">
-      <span class="glyphicon glyphicon-ok"></span>
-      &nbsp;&nbsp;Submit
-    </a>
-  </center>
+	<center>
+		<h1>Tell us a bit about Yourself</h1>
+	</center>
+	<br/><br/><br/>
+	<div style="max-width:500px;margin: 0 auto; ;">
+		<label>
+			<p>Gender</p>
+			<span style="color:red" ng-show="invalid_gender">Required Field</span>
+			<div class="radio radio-success">
+			<label>
+				<input type="radio" ng-model="gender" value="M" checked>
+				<span class="circle"></span>
+				<span class="check"></span>
+				Male
+			</label>
+			</div>
+			<div class="radio radio-success">
+			<label>
+				<input type="radio" ng-model="gender" value="F">
+				<span class="circle"></span>
+				<span class="check"></span>
+				Female
+			</label>
+			</div>
+		</label>
+		<br/><br/><br/>
+		<label>
+			<p>Age</p>
+			<span style="color:red" ng-show="invalid_age">Required Field</span>
+			<div class="form-control-wrapper">
+				<input type="number" min="10" step="1" max="100" style="width:210px;" class="form-control empty" placeholder="in years" ng-model="age"/>
+				<span class="material-input"></span>
+			</div>
+		</label>
+		<br/><br/><br/>
+		<label>
+			<p>Education Level</p>
+			<span style="color:red" ng-show="invalid_education">Required Field</span>
+			<select class="form-control"  name="country" ng-model="education_level" style="width:210px;" required>
+				<option value="Primary education">Primary education</option>
+				<option value="Secondary education">Secondary education</option>
+				<option value="Bachelor">Bachelor Degree</option>
+				<option value="Master">Master Degree</option>
+				<option value="Doctoral">Doctoral</option>
+			</select>
+		</label>
+		<br/><br/><br/>
+		<label>
+			<p>Employment Status</p>
+			<span style="color:red" ng-show="invalid_employment">Required Field</span>
+			<select class="form-control"  name="country" ng-model="employment_status" style="width:210px;">
+				<option value="Employed">Employed</option>
+				<option value="Self Employed">Self Employed</option>
+				<option value="Unemployed">Unmployed</option>
+				<option value="Decline to say">Decline to say</option>
+			</select>
+		</label>
+	</div>
+	<center>
+		<button type="submit" class="btn btn-primary btn-lg shadow-z-2" ng-click="submit()">
+			<span class="glyphicon glyphicon-ok"></span>
+			&nbsp;&nbsp;Submit
+		</button>
+	</center>
 </div>

@@ -6,6 +6,14 @@ angular.module('aspiringResearcherApp', [
   'ngSanitize',
   'ngRoute'
 ])
+  .constant('api', {
+    'url': "https://young-sands-7278.herokuapp.com"
+  })
+  .constant('debug', {
+    'log': function(output){
+      console.log(output);
+    }
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
