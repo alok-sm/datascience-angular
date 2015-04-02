@@ -9,8 +9,13 @@
 		<h1><b>Domain:</b> {{domain.name}}</h1>
 		<h2><b>Task:</b> {{domain.description}}</h2>
 		
-		<h3>
+		<h3 ng-show="prepercentile">
 			Out of a 100 people, I think I will do better than 
+			<span style="color:#009688;font-size:200%;">{{confidence}}</span> 
+			people
+		</h3>
+		<h3 ng-show="postpercentile">
+			Out of a 100 people, I think I did better than 
 			<span style="color:#009688;font-size:200%;">{{confidence}}</span> 
 			people
 		</h3>

@@ -2,21 +2,34 @@
 
 angular.module('aspiringResearcherApp')
 .controller('TaskAssignCtrl', function ($scope, $http, $interval, $location, api, debug) {
-
+	// bootbox.alert("hello");
 	function setQuestion(){
 		$http.get(api.url + "/tasks?token=" + localStorage.getItem('token'))
 	 	.success(function(response){
+	 		bootbox.hideAll()
 	 		debug.log(response);
 
 			$scope.isQuestion = false;
 			$scope.isConfidence = false;
 
 			if('domain' in response && response['status'] == 'success'){
+				if(response.type == "0"){
+					$scope.prepercentile  = true;
+					$scope.postpercentile = false;
+				}else{
+					$scope.prepercentile  = false;
+					$scope.postpercentile = true;
+				}
 				debug.log(" if");
 				$scope.isConfidence = true;
 				$scope.domain = response.domain;
 				$scope.confidence = 50;
 				$scope.submit = function(){
+					bootbox.dialog({
+						title: "Loading",
+						message: '<center><img src="../../../loading.gif" width="100px"/></center>'
+					});
+
 					$http.post(api.url + "/answers", {
 						"token"     : localStorage.getItem('token'),
 						"domain_id" : response['domain']['id'],
@@ -48,6 +61,10 @@ angular.module('aspiringResearcherApp')
 
 						$interval.cancel($scope.timer)
 						$scope.time_remaining_danger = false;
+						bootbox.dialog({
+							title: "Loading",
+							message: '<center><img src="../../../loading.gif" width="100px"/></center>'
+						});
 
 						$http.post(api.url + "/answers", {
 							"token"      : localStorage.getItem('token'),
@@ -75,6 +92,10 @@ angular.module('aspiringResearcherApp')
 						"data"       : $scope.question.name,
 						"task_id"    : $scope.question.task.id
 					})
+					bootbox.dialog({
+						title: "Loading",
+						message: '<center><img src="../../../loading.gif" width="100px"/></center>'
+					});
 
 					$http.post(api.url + "/answers", {
 						"token"      : localStorage.getItem('token'),
@@ -97,5 +118,9 @@ angular.module('aspiringResearcherApp')
 			}
 		});
 	}
+	bootbox.dialog({
+		title: "Loading",
+		message: '<center><img src="../../../loading.gif" width="100px"/></center>'
+	});
 	setQuestion();
 });
