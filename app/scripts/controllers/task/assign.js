@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aspiringResearcherApp')
-.controller('TaskAssignCtrl', function ($scope, $http, $interval, $location, api, debug) {
+.controller('TaskAssignCtrl', function ($scope, $http, $interval, $location, $sce, api, debug) {
 	// bootbox.alert("hello");
 	function setQuestion(){
 		$http.get(api.url + "/tasks?token=" + localStorage.getItem('token'))
@@ -82,6 +82,14 @@ angular.module('aspiringResearcherApp')
 				$scope.isQuestion = true;
 				$scope.question = response;
 				$scope.question.confidence = 3;
+
+
+				$scope.getURL = function(x){
+		            return $sce.trustAsResourceUrl('https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/'+x+'&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true');
+		        };
+		        if($scope.question.task.type=="audio"){
+		        	$scope.question.task.data=$scope.getURL($scope.question.task.data);
+		        }
 
 				$scope.submit = function(){
 					$interval.cancel($scope.timer)
