@@ -1,19 +1,27 @@
-<div id="container" onload="init()" >
-	<customtask  ng-repeat='x in testResp' data='x' id='customtask'></customtask>
+<div ng-show="isQuestion"  class="mainpage">
+	<customtask></customtask>
+	
 </div>
 
-<script type="text/javascript">
-		setTimeout(function(){ 
-			taskinners = document.getElementsByTagName("customtask");
-			for(i = 1; i < taskinners.length; i++){
-				taskinners[i].style.display = "none";
-			}
-			i = 0;
-		}, 100);
+
+<div class="mainpage" ng-show="isConfidence">
+	<center>
+		<h1><b>Domain:</b> {{domain.name}}</h1>
+		<h2><b>Task:</b> {{domain.description}}</h2>
 		
-	function changeQuestion(){
-		taskinners[i].style.display = "none"
-		i = (i + 1) % taskinners.length
-		taskinners[i].style.display = "inherit"
-	}
-</script>
+		<h3>
+			Out of a 100 people, I think I will do better than 
+			<span style="color:#009688;font-size:200%;">{{confidence}}</span> 
+			people
+		</h3>
+		<div>
+			<span style="font-size:200%;">0&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<input style="width:50%" type="range" min="0" step="5" max="100" ng-model="confidence">
+			<span style="font-size:200%;">&nbsp;&nbsp;&nbsp;&nbsp;100</span>
+		</div>
+		<button class="btn btn-primary btn-lg shadow-z-2" ng-click="submit()">
+	      <span class="glyphicon glyphicon-ok"></span>
+	      &nbsp;&nbsp;Submit
+	    </button>
+    </center>
+</div>

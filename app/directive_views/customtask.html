@@ -1,31 +1,81 @@
-<div class="mainpage">
-	<div ng-switch="question.taskType">
-		<center>
-			<h2>{{question.taskTitle}}</h2>
-			<img ng-switch-when="image" style="max-width:400px;" class="img-responsive" src="{{question.taskData}}"/>
-			<p ng-switch-when="text">{{question.taskData}}</p>
-		</center>
-	</div>
-	<br/><br/>
-	<div ng-switch="question.answerType">
-		<div ng-switch-when="radio" class="radio radio-success" ng-repeat="y in question.answerData">
-			<label>
-				<input type="radio" name="{{question.taskId}}" value="{{y}}" checked>
-				<span class="circle"></span>
-				<span class="check"></span>
-				{{y}}
-			</label>
+<div>
+	<center>
+		<h2>{{question.task.title}}</h2>
+	</center>
+</div>
+<br/><br/>
+<div class="row">
+    <div class="col-md-6 portfolio-item">
+	    <div ng-switch="question.task.type">
+	        <center>
+	        	<img ng-switch-when="image" style="max-width:400px;" class="img-responsive" src="{{question.task.data}}"/>
+				<object ng-switch-when="video" width="420" height="315" data="{{question.task.data}}"> </object>
+				<p ng-switch-when="text">{{question.task.data}}</p>
+	        </center>
 		</div>
-			<div ng-switch-when="text" class="form-control-wrapper">
-				<p>Answer</p>
-				<div>
-					<input type="number" class="form-control empty"/>
-					<span class="material-input"></span>
+		<div ng-switch="question.task.answer_type">
+
+			<div ng-switch-when="select">
+				<div class="radio radio-success" ng-repeat="y in question.task.answer_data.split(',')">
+					<label>
+						<input type="radio" ng-model="question.name" value="{{y}}">
+						<span class="circle"></span>
+						<span class="check"></span>
+						{{y}}
+					</label>
 				</div>
 			</div>
+				<div ng-switch-when="text" class="form-control-wrapper">
+					<p>Answer</p>
+					<div>
+						<input ng-model="question.name" type="number" class="form-control empty"/>
+						<span class="material-input"></span>
+					</div>
+				</div>
+		</div>
 	</div>
+    <div class="col-md-6 portfolio-item">
+        <center>
+        	<h1>Time Remaining</h1>
+        	<h1 ng-hide="time_remaining_danger" style="color: #009688; font-size:600%;">{{time_remaining}}</h1>
+        	<h1 ng-show="time_remaining_danger" style="color: #ff0000; font-size:600%;">{{time_remaining}}</h1>
+        </center>
+    </div>
+</div>
+<br/><br/>
+<div>
 	<center>
-		<button class="btn btn-primary btn-lg shadow-z-2" onclick="changeQuestion()">
+		<div>
+			<h4>On a scale of 1-5, How confident are you about your Answer?</h4>
+			<div class="radio radio-success">
+				<span style="color: #009688; font-size:200%;">1&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<label>
+					<input type="radio" ng-model="question.confidence" value="1">
+					<span class="circle"></span>
+					<span class="check"></span>
+				</label>
+				<label>
+					<input type="radio" ng-model="question.confidence" value="2">
+					<span class="circle"></span>
+					<span class="check"></span>
+				</label><label>
+					<input type="radio" ng-model="question.confidence" value="3" checked>
+					<span class="circle"></span>
+					<span class="check"></span>
+				</label><label>
+					<input type="radio" ng-model="question.confidence" value="4">
+					<span class="circle"></span>
+					<span class="check"></span>
+				</label><label>
+					<input type="radio" ng-model="question.confidence" value="5">
+					<span class="circle"></span>
+					<span class="check"></span>
+				</label>
+				<span style="color: #009688; font-size:200%;">&nbsp;&nbsp;&nbsp;&nbsp;5</span>
+			</div>
+			<!-- <span class="material-input"></span> -->
+		</div>
+		<button class="btn btn-primary btn-lg shadow-z-2" ng-click="submit()">
 	      <span class="glyphicon glyphicon-ok"></span>
 	      &nbsp;&nbsp;Submit
 	    </button>

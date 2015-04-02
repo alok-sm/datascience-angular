@@ -1,46 +1,101 @@
 'use strict';
 
 angular.module('aspiringResearcherApp')
-	.controller('TaskAssignCtrl', function ($scope) {
-		// $http.post('/api/task/assign', {msg:'hello word!'})
-		// 	.success(function(data, status, headers, config) {
+.controller('TaskAssignCtrl', function ($scope, $http, $interval, $location, api, debug) {
 
-		// 	})
-		// 	.error(function(data, status, headers, config) {
+	function setQuestion(){
+		$http.get(api.url + "/tasks?token=" + localStorage.getItem('token'))
+	 	.success(function(response){
+	 		debug.log(response);
 
-		// 	});
-		$scope.testResp = [
-			{
-				"taskId":"1", 
-				"taskTitle":"Guess the Breed of the dog in the image",
-				"taskType":"image",
-				"taskData" : "https://raw.githubusercontent.com/5harad/crowds/master/data/tasks/dog_breeds/assets/dog1.jpg",
-				"answerData" :["German Shepherd", "Labrador", "Pug", "Doberman"],
-				"answerType":"radio"
-			}, 
-			{
-				"taskId":"2",
-				"taskTitle":"Guess the meaning of the word in the context",
-				"taskType":"text",
-				"taskData" : "In 1974, Poland won the World Cup, but the success turned out to be an *aberration*, and Poland have not won a World Cup since.",
-				"answerData" : ["divergence","imperfection","heterogeneity","unorthodox","erro"],
-				"answerType":"radio" 
-			}, 
-			{
-				"taskId":"3",
-				"taskTitle":"Predict the weight of the cow in kilos",
-				"taskType":"image", 
-				"taskData":"http://dreamatico.com/data_images/cow/cow-5.jpg",
-				"answerType":"text" 
-			},
-			{
-				"taskId":"4",
-				"taskTitle":"What is the population of Brazil?",
-				"taskType":"text", 
-				"taskData" : "",
-				"answerType":"text" 
+			$scope.isQuestion = false;
+			$scope.isConfidence = false;
+
+			if('domain' in response && response['status'] == 'success'){
+				debug.log(" if");
+				$scope.isConfidence = true;
+				$scope.domain = response.domain;
+				$scope.confidence = 50;
+				$scope.submit = function(){
+					$http.post(api.url + "/answers", {
+						"token"     : localStorage.getItem('token'),
+						"domain_id" : response['domain']['id'],
+						"rank"      : 5
+					})
+					.success(function(response){
+						debug.log("confidence sent");
+						$scope.submit = null;
+						setQuestion();
+					});
+				};
+
+			}else if(response['status'] == 'success'){
+				$scope.time_remaining = 30;
+				$scope.timer = $interval(function(){
+					debug.log("hello" + $scope.time_remaining)
+					$scope.time_remaining--;
+					if($scope.time_remaining == 10){
+						$scope.time_remaining_danger = true;
+					}
+					if($scope.time_remaining == 0){
+						debug.log({
+							"token"      : localStorage.getItem('token'),
+							"time_taken" : 30,
+							"confidence" : 0,
+							"data"       : "timeout",
+							"task_id"    : $scope.question.task.id
+						});
+
+						$interval.cancel($scope.timer)
+						$scope.time_remaining_danger = false;
+
+						$http.post(api.url + "/answers", {
+							"token"      : localStorage.getItem('token'),
+							"time_taken" : 30,
+							"confidence" : 0,
+							"data"       : "timeout",
+							"task_id"    : $scope.question.task.id
+						})
+						.success(function(response){
+							$scope.submit = null;
+							setQuestion();
+						});
+					}
+				}, 1000);
+				$scope.isQuestion = true;
+				$scope.question = response;
+				$scope.question.confidence = 3;
+
+				$scope.submit = function(){
+					$interval.cancel($scope.timer)
+					debug.log({
+						"token"      : localStorage.getItem('token'),
+						"time_taken" : 30 - $scope.time_remaining,
+						"confidence" : $scope.question.confidence,
+						"data"       : $scope.question.name,
+						"task_id"    : $scope.question.task.id
+					})
+
+					$http.post(api.url + "/answers", {
+						"token"      : localStorage.getItem('token'),
+						"time_taken" : 30 - $scope.time_remaining,
+						"confidence" : $scope.question.confidence,
+						"data"       : $scope.question.name,
+						"task_id"    : $scope.question.task.id
+					})
+					.success(function(response){
+						$scope.submit = null;
+						setQuestion();
+					});
+					// bootbox.alert("hello1")
+				};
+			}else if(response['status'] == 'done'){
+				debug.log("done!");
+				$location.path("/task/done");
+			}else{
+				debug.log("API error!");
 			}
-		]
-
-		$scope.index = 0;
-	});
+		});
+	}
+	setQuestion();
+});

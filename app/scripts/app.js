@@ -32,6 +32,10 @@ angular.module('aspiringResearcherApp', [
         templateUrl: 'views/task/assign.html',
         controller: 'TaskAssignCtrl'
       })
+      .when('/task/done', {
+        templateUrl: 'views/task/done.html',
+        controller: 'TaskDoneCtrl'
+      })
       .otherwise({
         redirectTo: '404'
       });

@@ -2,7 +2,7 @@
 
 angular.module('aspiringResearcherApp')
 .controller('UserCreateCtrl', function ($scope, $http, $location, api, debug) {
-	if (localStorage.getItem("_token") !== null) {
+	if (localStorage.getItem("token") !== null) {
 		$location.path("/task/assign");
 	}
 
@@ -21,7 +21,7 @@ angular.module('aspiringResearcherApp')
 				'age'        : $scope.age
 			})
 			.success(function(success_response){
-				localStorage.setItem("_token", success_response['token']);
+				localStorage.setItem("token", success_response['token']);
 				$location.path("/task/assign");
 			})
 			.error(function(error_response){
