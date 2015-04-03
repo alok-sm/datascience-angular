@@ -7,7 +7,7 @@
 <div class="mainpage" ng-show="isConfidence">
 	<center>
 		<h1><b>Domain:</b> {{domain.name}}</h1>
-		<h2><b>Task:</b> {{domain.description}}</h2>
+		<h2 ng-show="prepercentile"><b>Task:</b> {{domain.description}}</h2>
 		
 		<h3 ng-show="prepercentile">
 			Out of a 100 people, I think I will do better than 

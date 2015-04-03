@@ -16,6 +16,7 @@ angular.module('aspiringResearcherApp')
 				if(response.type == "0"){
 					$scope.prepercentile  = true;
 					$scope.postpercentile = false;
+					localStorage.setItem('remaining', response['remaining'])
 				}else{
 					$scope.prepercentile  = false;
 					$scope.postpercentile = true;
@@ -35,6 +36,7 @@ angular.module('aspiringResearcherApp')
 						"domain_id" : response['domain']['id'],
 						"rank"      : 5
 					})
+
 					.success(function(response){
 						debug.log("confidence sent");
 						$scope.submit = null;
@@ -44,8 +46,8 @@ angular.module('aspiringResearcherApp')
 
 			}else if(response['status'] == 'success'){
 				$scope.time_remaining = 30;
+				$scope.time_remaining_danger = false;
 				$scope.timer = $interval(function(){
-					debug.log("hello" + $scope.time_remaining)
 					$scope.time_remaining--;
 					if($scope.time_remaining == 10){
 						$scope.time_remaining_danger = true;
@@ -60,7 +62,6 @@ angular.module('aspiringResearcherApp')
 						});
 
 						$interval.cancel($scope.timer)
-						$scope.time_remaining_danger = false;
 						bootbox.dialog({
 							title: "Loading",
 							message: '<center><img src="../../../loading.gif" width="100px"/></center>'
@@ -82,6 +83,8 @@ angular.module('aspiringResearcherApp')
 				$scope.isQuestion = true;
 				$scope.question = response;
 				$scope.question.confidence = 3;
+				$scope.progress_bar_style = "width:"+parseInt(response['remaining']/localStorage.getItem('remaining') * 100)+"%";
+				$scope.progress_text = "Tasks Remaining in the domain:\n"+response['remaining']+" / "+localStorage.getItem('remaining')
 
 
 				$scope.getURL = function(x){

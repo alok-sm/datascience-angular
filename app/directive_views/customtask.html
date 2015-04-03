@@ -5,12 +5,25 @@
 </div>
 <br/><br/>
 <div class="row">
+	<div class="col-md-3 portfolio-item">
+	    <div ng-if="question.experimental_condition!=1">
+			<div ng-switch="question.experimental_condition">
+				<h4 ng-switch-when="2">Most recent 5 responses, ordered by submission time</h4>
+				<h4 ng-switch-when="3">First 5 responses, ordered by submission time</h4>
+				<h4 ng-switch-when="4">Responses	from the 5 most confident people who have answered this question</h4>
+				<div ng-if="question.stats !='Not enough data'">
+					<p ng-repeat="x in question.stats track by $index">{{x}}</p>
+				</div>
+				<p ng-show="question.stats=='Not enough data'"><br>Not enough data.</p>
+			</div>
+		</div>
+    </div>
     <div class="col-md-6 portfolio-item">
 	    <div ng-switch="question.task.type">
 	        <center>
-	        	<img ng-switch-when="image" style="max-width:400px;" class="img-responsive" src="{{question.task.data}}"/>
-				<object ng-switch-when="video" width="420" height="315" data="{{question.task.data}}"> </object>
-				<iframe ng-switch-when="audio" width="80%" height="300" scrolling="no" frameborder="no" src="{{question.task.data}}"></iframe>
+	        	<img ng-switch-when="image" style="width:80%;" class="img-responsive" src="{{question.task.data}}"/>
+				<object ng-switch-when="video" width="80%;" data="{{question.task.data}}"> </object>
+				<iframe ng-switch-when="audio" width="80%;" height="300" scrolling="no" frameborder="no" src="{{question.task.data}}"></iframe>
 				<p ng-switch-when="text">{{question.task.data}}</p>
 	        </center>
 		</div>
@@ -35,9 +48,14 @@
 				</div>
 		</div>
 	</div>
-    <div class="col-md-6 portfolio-item">
+    <div class="col-md-3 portfolio-item">
         <center>
-        	<h1>Time Remaining</h1>
+        	<h2>{{progress_text}}</h2>
+			<div class="progress" style="height:50px;">
+				<div class="progress-bar" style="{{progress_bar_style}}"></div>
+			</div>
+			<br/><br/>
+        	<h2>Time Remaining</h2>
         	<h1 ng-hide="time_remaining_danger" style="color: #009688; font-size:600%;">{{time_remaining}}</h1>
         	<h1 ng-show="time_remaining_danger" style="color: #ff0000; font-size:600%;">{{time_remaining}}</h1>
         </center>

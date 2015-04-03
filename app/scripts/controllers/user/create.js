@@ -22,7 +22,7 @@ angular.module('aspiringResearcherApp')
 			})
 			.success(function(success_response){
 				localStorage.setItem("token", success_response['token']);
-				$location.path("/task/assign");
+				$location.path("/task/intro");
 			})
 			.error(function(error_response){
 				debug.log(error_response);
