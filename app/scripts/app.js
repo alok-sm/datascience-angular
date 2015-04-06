@@ -7,7 +7,8 @@ angular.module('aspiringResearcherApp', [
   'ngRoute'
 ])
   .constant('api', {
-    'url': "https://young-sands-7278.herokuapp.com"
+    // 'url': "http://crowds.5harad.com"
+    'url': 'https://young-sands-7278.herokuapp.com'
   })
   .constant('debug', {
     'log': function(output){

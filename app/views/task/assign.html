@@ -1,4 +1,4 @@
-<div ng-show="isQuestion"  class="mainpage">
+<div ng-show="isQuestion" class="mainpage">
 	<customtask></customtask>
 	
 </div>
@@ -8,25 +8,26 @@
 	<center>
 		<h1><b>Domain:</b> {{domain.name}}</h1>
 		<h2 ng-show="prepercentile"><b>Task:</b> {{domain.description}}</h2>
-		
-		<h3 ng-show="prepercentile">
-			Out of a 100 people, I think I will do better than 
-			<span style="color:#009688;font-size:200%;">{{confidence}}</span> 
-			people
-		</h3>
-		<h3 ng-show="postpercentile">
-			Out of a 100 people, I think I did better than 
-			<span style="color:#009688;font-size:200%;">{{confidence}}</span> 
-			people
-		</h3>
-		<div>
-			<span style="font-size:200%;">0&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<input style="width:50%" type="range" min="0" step="5" max="100" ng-model="confidence">
-			<span style="font-size:200%;">&nbsp;&nbsp;&nbsp;&nbsp;100</span>
+		<br/><br/>
+		<div style="font-size:300%;">
+			<span ng-show="prepercentile">
+				Out of a 100 people, I think I will do better than 
+			</span>
+			<span ng-show="postpercentile">
+				Out of a 100 people, I think I did better than
+			</span>
+			
+			<div class="form-control-wrapper" style="display:inline;">
+				<input type="number" min="0" class="form-control empty" style="width:80px;display:inline;" max="100" ng-model="confidence">
+				<span class="material-input"></span>
+			</div>
+			<span>
+				people
+			</span>
 		</div>
 		<button class="btn btn-primary btn-lg shadow-z-2" ng-click="submit()">
-	      <span class="glyphicon glyphicon-ok"></span>
-	      &nbsp;&nbsp;Submit
+		    <span class="glyphicon glyphicon-ok"></span>
+		    &nbsp;&nbsp;Submit
 	    </button>
     </center>
 </div>

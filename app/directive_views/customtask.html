@@ -1,35 +1,60 @@
-<div>
+<div class="">
 	<center>
 		<h2>{{question.task.title}}</h2>
+
 	</center>
 </div>
 <br/><br/>
-<div class="row">
-	<div class="col-md-3 portfolio-item">
-	    <div ng-if="question.experimental_condition!=1">
-			<div ng-switch="question.experimental_condition">
+
+<!--non expeimental condition -->
+
+<div class="row" >
+	<div class="col-md-3 portfolio-item" ng-if="question.experimental_condition">
+	    <div ng-if="question.experimental_condition!=1" class="">
+			<div ng-switch="question.experimental_condition" style="width:80%;">
 				<h4 ng-switch-when="2">Most recent 5 responses, ordered by submission time</h4>
 				<h4 ng-switch-when="3">First 5 responses, ordered by submission time</h4>
 				<h4 ng-switch-when="4">Responses	from the 5 most confident people who have answered this question</h4>
-				<div ng-if="question.stats !='Not enough data'">
-					<p ng-repeat="x in question.stats track by $index">{{x}}</p>
-				</div>
+				<ul ng-if="question.stats !='Not enough data'">
+					<li ng-repeat="x in question.stats track by $index">{{x}}</li>
+				</ul>
 				<p ng-show="question.stats=='Not enough data'"><br>Not enough data.</p>
 			</div>
 		</div>
+    	<br/><br/><br/>
     </div>
-    <div class="col-md-6 portfolio-item">
+    <div class="{{divstyle1}}">
 	    <div ng-switch="question.task.type">
 	        <center>
 	        	<img ng-switch-when="image" style="width:80%;" class="img-responsive" src="{{question.task.data}}"/>
-				<object ng-switch-when="video" width="80%;" data="{{question.task.data}}"> </object>
-				<iframe ng-switch-when="audio" width="80%;" height="300" scrolling="no" frameborder="no" src="{{question.task.data}}"></iframe>
-				<p ng-switch-when="text">{{question.task.data}}</p>
+				<iframe 
+					ng-switch-when="video" 
+					id="ytplayer" 
+					width="90%" 
+					height="400"
+					src="{{question.task.data}}" 
+					scrolling="no" 
+					frameborder="0"></iframe>
+				<iframe 
+					ng-switch-when="audio" 
+					id="sc-widget" 
+					onload="scInit()" 
+					width="90%" 
+					height="300" 
+					scrolling="no" 
+					frameborder="no" 
+					src="{{question.task.data}}" ></iframe> 
+
+				<h3 ng-switch-when="text">{{question.task.data}}</h3>
+				<h3 ng-switch-when="int">{{question.task.data}}</h3>
 	        </center>
 		</div>
+		<br/>
+		<span style="color:red" ng-show="invalid_answer">Please answer this question before continuing</span>
 		<div ng-switch="question.task.answer_type">
 
-			<div ng-switch-when="select">
+			<div ng-switch-when="mcq">
+				<h3>Options:</h3>
 				<div class="radio radio-success" ng-repeat="y in question.task.answer_data.split(',')">
 					<label>
 						<input type="radio" ng-model="question.name" value="{{y}}">
@@ -39,58 +64,77 @@
 					</label>
 				</div>
 			</div>
-				<div ng-switch-when="text" class="form-control-wrapper">
+				<div ng-switch-when="text">
+					<br/><br/>
 					<p>Answer</p>
-					<div>
+					<div class="form-control-wrapper">
+						<input ng-model="question.name" type="number" class="form-control empty"/>
+						<span class="material-input"></span>
+					</div>
+				</div>
+				<div ng-switch-when="int">
+					<br/><br/>
+					<p>Answer</p>
+					<div class="form-control-wrapper">
 						<input ng-model="question.name" type="number" class="form-control empty"/>
 						<span class="material-input"></span>
 					</div>
 				</div>
 		</div>
+		<br/><br/><br/>
 	</div>
-    <div class="col-md-3 portfolio-item">
+    <div class="{{divstyle2}}">
         <center>
+        	<h2>Time Remaining</h2>
+        	<h1 ng-hide="time_remaining_danger" style="color: #009688; font-size:600%;">{{time_remaining}}</h1>
+        	<h1 ng-show="time_remaining_danger" style="color: #ff0000; font-size:600%;">{{time_remaining}}</h1>
+			<br/><br/>
         	<h2>{{progress_text}}</h2>
 			<div class="progress" style="height:50px;">
 				<div class="progress-bar" style="{{progress_bar_style}}"></div>
 			</div>
-			<br/><br/>
-        	<h2>Time Remaining</h2>
-        	<h1 ng-hide="time_remaining_danger" style="color: #009688; font-size:600%;">{{time_remaining}}</h1>
-        	<h1 ng-show="time_remaining_danger" style="color: #ff0000; font-size:600%;">{{time_remaining}}</h1>
         </center>
     </div>
 </div>
 <br/><br/>
-<div>
+<div class="">
 	<center>
 		<div>
 			<h4>On a scale of 1-5, How confident are you about your Answer?</h4>
+			<span style="color:red" ng-show="invalid_confidence">Please answer this question before continuing</span>
 			<div class="radio radio-success">
-				<span style="color: #009688; font-size:200%;">1&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<span style="color: #009688; font-size:200%;">Least Confident&nbsp;&nbsp;&nbsp;&nbsp;</span>
 				<label>
 					<input type="radio" ng-model="question.confidence" value="1">
 					<span class="circle"></span>
 					<span class="check"></span>
+					<!-- <br/>1 -->
 				</label>
 				<label>
 					<input type="radio" ng-model="question.confidence" value="2">
 					<span class="circle"></span>
 					<span class="check"></span>
-				</label><label>
+					<!-- <br/>1 -->
+				</label>
+				<label>
 					<input type="radio" ng-model="question.confidence" value="3" checked>
 					<span class="circle"></span>
 					<span class="check"></span>
-				</label><label>
+					<!-- <br/>1 -->
+				</label>
+				<label>
 					<input type="radio" ng-model="question.confidence" value="4">
 					<span class="circle"></span>
 					<span class="check"></span>
-				</label><label>
+					<!-- <br/>1 -->
+				</label>
+				<label>
 					<input type="radio" ng-model="question.confidence" value="5">
 					<span class="circle"></span>
 					<span class="check"></span>
+					<!-- <br/>1 -->
 				</label>
-				<span style="color: #009688; font-size:200%;">&nbsp;&nbsp;&nbsp;&nbsp;5</span>
+				<span style="color: #009688; font-size:200%;">&nbsp;&nbsp;&nbsp;&nbsp;Most Confident</span>
 			</div>
 			<!-- <span class="material-input"></span> -->
 		</div>
@@ -100,3 +144,33 @@
 	    </button>
     </center>
 </div>
+
+<br/><br/><br/>
+
+<!-- <input type="number" style="display:none" ng-model='timer'> -->
+<script>
+	var handler_called = false;
+	function scInit(){
+		var widgetIframe = document.getElementById('sc-widget');
+		widget           = SC.Widget('sc-widget');
+		widget.bind(SC.Widget.Events.FINISH, function(){
+			angular.element(document.getElementById('container')).scope().timer_event();
+		});
+	}
+	window.addEventListener('storage', function(event){
+		if(event.key == 'vid_done'){
+			console.log('hello');
+			// $scope.timer_event()
+			if(!handler_called){
+				angular.element(document.getElementById('container')).scope().timer_event();
+				handler_called = true;
+			}
+			
+		}
+	});
+
+	// $(window).load(function(){
+	// 	document.getElementById('ytplayer').contentWindow.play();
+	// });
+</script>
+<script src="https://w.soundcloud.com/player/api.js"></script>
